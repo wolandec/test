@@ -1,4 +1,4 @@
-import Operation, { OperationType, Assessment } from './models/Operation';
+import Operation, { OperationType, Assessment } from '@/models/Operation';
 
 export default class FieldService {
     private operations: Array<Operation> = [

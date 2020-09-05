@@ -1,0 +1,35 @@
+$color-primary: #333333;
+$color-primary-2: #091c28;
+$color-secondary: #edeeee;
+$color-secondary-2: #f9f9f9;
+$color-ternary: #ffffff;
+
+$color-fault: #eb5757;
+$color-success: #66cc66;
+$color-normal: #ffe06d;
+$color-fault: #ff7360;
+$color-disabled: #edeeee;
+
+$font-display: "Ubuntu", sans-serif;
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: $font-display;
+  color: $color-primary;
+  font-weight: 500;
+  line-height: 1.9rem;
+}
