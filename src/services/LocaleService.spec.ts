@@ -1,9 +1,9 @@
 import LocaleService from "./LocaleService";
 
 describe("getLocale", () => {
-  test(`Returns undefined if locale=undefined`, async () => {
+  test(`Returns ru-Ru if locale=undefined`, async () => {
     const localeService: LocaleService = new LocaleService();
-    const locale: Object = await localeService.getLocale();
+    const locale: Object | undefined = await localeService.getLocale();
     const expectedLocale = {
       PLOWING: "Вспашка",
       BOWLING: "Боронование",

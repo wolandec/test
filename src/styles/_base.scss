@@ -1,14 +1,16 @@
 $color-primary: #333333;
 $color-primary-2: #091c28;
+$color-primary-2_rgb: 9, 28, 40;
 $color-secondary: #edeeee;
 $color-secondary-2: #f9f9f9;
 $color-ternary: #ffffff;
+$color-fourthly: #3399ff;
 
 $color-fault: #eb5757;
 $color-success: #66cc66;
 $color-normal: #ffe06d;
-$color-fault: #ff7360;
 $color-disabled: #edeeee;
+$color-inactive: #a7a9ac;
 
 $font-display: "Ubuntu", sans-serif;
 
@@ -32,4 +34,51 @@ body {
   color: $color-primary;
   font-weight: 500;
   line-height: 1.9rem;
+}
+
+._u-uppercase {
+  text-transform: uppercase;
+}
+
+._u-fill-color-fault {
+  fill: $color-fault;
+}
+
+._u-fill-color-normal {
+  fill: $color-normal;
+}
+
+._u-fill-color-success {
+  fill: $color-success;
+}
+
+._u-fill-color-disabled {
+  fill: $color-disabled;
+}
+
+._u-text-disabled {
+  opacity: 0.3;
+}
+
+._u-flex-separated-content {
+  display: flex;
+  align-items: center;
+  & :not(:last-child) {
+    margin-right: 1rem;
+  }
+}
+
+.header-1 {
+  font-weight: 500;
+  font-style: normal;
+  font-size: 2.5rem;
+  line-height: 3.1rem;
+  letter-spacing: -0.8px;
+}
+
+.header-2 {
+  font-size: 1.1rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.3rem;
 }
