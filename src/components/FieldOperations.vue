@@ -11,7 +11,11 @@
       </div>
     </div>
     <div class="field-operations__table">
-      <ui-field-operations-table> </ui-field-operations-table>
+      <ui-field-operations-table
+        @sortField="handleSortFieldChange"
+        :propSortField="sortField"
+      >
+      </ui-field-operations-table>
     </div>
   </div>
 </template>
@@ -23,11 +27,18 @@ import UiFieldOperationsTable from "@/components/UiFieldOperationsTable.vue";
 
 @Component({ components: { UiButton, UiFieldOperationsTable } })
 export default class FieldOperations extends Vue {
+  private sortField: any = null;
+
   getLocale(): void {
     this.$store.dispatch("setLocale", "ru-Ru");
   }
   created() {
     this.getLocale();
+    this.sortField = this.$route.params.sortField;
+  }
+
+  handleSortFieldChange(sortField) {
+    this.$router.push({ name: "SortedFieldOperations", params: { sortField } });
   }
 }
 </script>

@@ -13,7 +13,21 @@ describe("getLocale", () => {
       HARVESTING: "Сбор урожая",
       EXCELLENT: "Отлично",
       SATISFACTORILY: "Удовлетворительно",
-      BADLY: "Плохо"
+      BADLY: "Плохо",
+      MONTHS: [
+        "Янв",
+        "Фев",
+        "Мар",
+        "Апр",
+        "Май",
+        "Июнь",
+        "Июль",
+        "Авг",
+        "Сент",
+        "Окт",
+        "Нояб",
+        "Дек"
+      ]
     };
     expect(locale).toEqual(expectedLocale);
   });

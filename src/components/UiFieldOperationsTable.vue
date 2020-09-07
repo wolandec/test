@@ -113,19 +113,22 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import Operation, { OperationType, Assessment } from "@/models/Operation";
 import { State } from "vuex-class/lib";
 
 @Component
 export default class UiFieldOperationsTable extends Vue {
+  @Prop({ type: String, default: "date" })
+  readonly propSortField!: keyof Operation;
+
   @State
   public operations!: Array<Operation>;
 
   @State
   public locale!: any;
 
-  private sortField: keyof typeof Operation | null = null;
+  private sortField: keyof Operation | null = null;
 
   get preparedForViewOperations() {
     if (!this.operations) return [];
@@ -149,9 +152,10 @@ export default class UiFieldOperationsTable extends Vue {
 
   created() {
     this.setOperations();
+    this.sortField = this.propSortField;
   }
 
-  sortedBySvgFillClass(field: keyof typeof Operation) {
+  sortedBySvgFillClass(field: keyof Operation) {
     if (field === this.sortField) return { "_u-fill-color-fourthy": true };
     return { "_u-fill-color-inactive": true };
   }
@@ -176,8 +180,9 @@ export default class UiFieldOperationsTable extends Vue {
     this.$store.dispatch("setOperations");
   }
 
-  sortFieldHandler(field: keyof typeof Operation) {
+  sortFieldHandler(field: keyof Operation) {
     this.sortField = field;
+    this.$emit("sortField", this.sortField);
   }
 }
 </script>

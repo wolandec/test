@@ -41,7 +41,7 @@ export default new Vuex.Store({
   },
   getters: {
     getSortedOperations: (state): Function => {
-      return (field: keyof typeof Operation): Array<Operation> => {
+      return (sortField: keyof Operation): Array<Operation> => {
         return state.operations?.sort(
           (operation: Operation, operation2: Operation) => {
             function createDateObject(operationDate: Operation["date"]) {
@@ -54,8 +54,7 @@ export default new Vuex.Store({
               return returnDate;
             }
 
-            // @ts-ignore
-            if (field === "date") {
+            if (sortField === "date") {
               const operationDate = createDateObject(operation.date);
               const operation2Date = createDateObject(operation2.date);
               return operation2Date > operationDate
@@ -65,7 +64,7 @@ export default new Vuex.Store({
                 : 0;
             }
             // @ts-ignore
-            return operation2[field] - operation[field];
+            return operation2[sortField] - operation[sortField];
           }
         );
       };
