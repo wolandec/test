@@ -52,8 +52,16 @@ body {
   fill: $color-success;
 }
 
+._u-fill-color-fourthy {
+  fill: $color-fourthly;
+}
+
 ._u-fill-color-disabled {
   fill: $color-disabled;
+}
+
+._u-fill-color-inactive {
+  fill: $color-inactive;
 }
 
 ._u-text-disabled {

@@ -45,7 +45,7 @@ import Operation, { OperationType, Assessment } from 'src/models/Operation';
 ...
 const fieldService = new FieldService();
 ...
-const operations = await fieldService.getOperations();
+const operations = await fieldService.setOperations();
 const firstOperationId = operations[0].id;
 
 const operation = await fieldService.getOperation(firstOperationId);

@@ -42,11 +42,19 @@
   border-collapse: collapse;
   font-size: 1.1rem;
   line-height: 1.3rem;
+  transition: all 0.2s;
   &__header {
     background-color: $color-disabled;
   }
-  & td,th {
+  & td,
+  th {
     text-align: left;
     padding: 1.5rem 0.9rem 1.8rem 0.9rem;
+  }
+  & th {
+    cursor: pointer;
+    &:hover {
+      background-color: $color-secondary-2;
+    }
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <table class="field-operations-table">
     <tr class="field-operations-table__header">
-      <th>
+      <th @click="sortFieldHandler('date')">
         <div class="_u-flex-separated-content">
           <span>Дата</span>
           <svg
@@ -10,17 +10,17 @@
             viewBox="0 0 10 5"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            :class="sortedBySvgFillClass('date')"
           >
             <path
               fill-rule="evenodd"
               clip-rule="evenodd"
               d="M10 0L5 5L0 0H10Z"
-              fill="#A7A9AC"
             />
           </svg>
         </div>
       </th>
-      <th>
+      <th @click="sortFieldHandler('type')">
         <div class="_u-flex-separated-content">
           <span>Операция</span>
           <svg
@@ -28,37 +28,37 @@
             height="5"
             viewBox="0 0 10 5"
             fill="none"
+            :class="sortedBySvgFillClass('type')"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
               fill-rule="evenodd"
               clip-rule="evenodd"
               d="M10 0L5 5L0 0H10Z"
-              fill="#A7A9AC"
             />
           </svg>
         </div>
       </th>
-      <th>
+      <th @click="sortFieldHandler('area')">
         <div class="_u-flex-separated-content">
-          <span>Культура</span>
+          <span>Площадь</span>
           <svg
             width="10"
             height="5"
             viewBox="0 0 10 5"
             fill="none"
+            :class="sortedBySvgFillClass('area')"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
               fill-rule="evenodd"
               clip-rule="evenodd"
               d="M10 0L5 5L0 0H10Z"
-              fill="#A7A9AC"
             />
           </svg>
         </div>
       </th>
-      <th>
+      <th @click="sortFieldHandler('assessment')">
         <div class="_u-flex-separated-content">
           <span>Качество</span>
           <svg
@@ -66,13 +66,13 @@
             height="5"
             viewBox="0 0 10 5"
             fill="none"
+            :class="sortedBySvgFillClass('assessment')"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
               fill-rule="evenodd"
               clip-rule="evenodd"
               d="M10 0L5 5L0 0H10Z"
-              fill="#A7A9AC"
             />
           </svg>
         </div>
@@ -85,7 +85,7 @@
     >
       <td class="_u-uppercase">{{ operation.date }}</td>
       <td>{{ locale[operation.operation] }}</td>
-      <td>{{ operation.culture }}</td>
+      <td>{{ operation.area }}</td>
       <td :title="operation.comment" class="_u-flex-separated-content">
         <svg
           width="20"
@@ -125,15 +125,20 @@ export default class UiFieldOperationsTable extends Vue {
   @State
   public locale!: any;
 
+  private sortField: keyof typeof Operation | null = null;
+
   get preparedForViewOperations() {
     if (!this.operations) return [];
-    return this.operations.map(operation => {
+    const sortedOperations = this.$store.getters.getSortedOperations(
+      this.sortField
+    );
+    return sortedOperations.map((operation: Operation) => {
       return {
         date: `${operation.date.day} ${
           this.locale["MONTHS"][operation.date.month]
         } ${operation.date.year}`,
         operation: OperationType[operation.type],
-        culture: "",
+        area: operation.area,
         assessment: operation.assessment
           ? Assessment[operation.assessment]
           : "",
@@ -142,13 +147,22 @@ export default class UiFieldOperationsTable extends Vue {
     });
   }
 
+  created() {
+    this.setOperations();
+  }
+
+  sortedBySvgFillClass(field: keyof typeof Operation) {
+    if (field === this.sortField) return { "_u-fill-color-fourthy": true };
+    return { "_u-fill-color-inactive": true };
+  }
+
   operationAssessmentClass(assessment: String) {
     switch (assessment) {
-      case "BADLY":
+      case Assessment[Assessment.BADLY]:
         return { "_u-fill-color-fault": true };
-      case "SATISFACTORILY":
+      case Assessment[Assessment.SATISFACTORILY]:
         return { "_u-fill-color-normal": true };
-      case "EXCELLENT":
+      case Assessment[Assessment.EXCELLENT]:
         return { "_u-fill-color-success": true };
       default:
         return {
@@ -158,12 +172,12 @@ export default class UiFieldOperationsTable extends Vue {
     }
   }
 
-  getOperations(): void {
+  setOperations(): void {
     this.$store.dispatch("setOperations");
   }
 
-  created() {
-    this.getOperations();
+  sortFieldHandler(field: keyof typeof Operation) {
+    this.sortField = field;
   }
 }
 </script>
