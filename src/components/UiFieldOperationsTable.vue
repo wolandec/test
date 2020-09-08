@@ -122,6 +122,9 @@ export default class UiFieldOperationsTable extends Vue {
   @Prop({ type: String, default: "date" })
   readonly propSortField!: keyof Operation;
 
+  @Prop({ type: String, default: "none" })
+  readonly propFilter!: string;
+
   @State
   public operations!: Array<Operation>;
 
@@ -137,7 +140,15 @@ export default class UiFieldOperationsTable extends Vue {
 
   get preparedForViewOperations() {
     if (!this.operations) return [];
+    let operations;
+    if (this.propFilter !== "none") {
+      operations = this.$store.getters.getFilteredOperations(
+        this.operations,
+        this.propFilter
+      );
+    }
     const sortedOperations = this.$store.getters.getSortedOperations(
+      operations ? operations : this.operations,
       this.sortField
     );
     return sortedOperations.map((operation: Operation) => {
@@ -176,7 +187,7 @@ export default class UiFieldOperationsTable extends Vue {
       default:
         return {
           "_u-fill-color-disabled": true,
-          "_u-text-color-disabled": true
+          "_u-text-disabled": true
         };
     }
   }

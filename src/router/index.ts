@@ -5,7 +5,7 @@ Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
-    path: "/fieldOperations",
+    path: "/field/operations",
     name: "FieldOperations",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -14,15 +14,15 @@ const routes: Array<RouteConfig> = [
       import(/* webpackChunkName: "about" */ "../views/Main.vue"),
     children: [
       {
-        path: "/fieldOperations/sort/:sortField",
-        name: "SortedFieldOperations"
+        path: "/field/operations/filter/:filter/sort/:sortField",
+        name: "QueryFieldOperations"
       }
     ]
   },
   {
     path: "/",
     name: "FieldOperations",
-    redirect: "/fieldOperations"
+    redirect: "/field/operations"
   }
 ];
 

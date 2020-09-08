@@ -56,6 +56,10 @@ body {
   fill: $color-fourthly;
 }
 
+._u-text-color-fourthy {
+  color: $color-fourthly;
+}
+
 ._u-fill-color-disabled {
   fill: $color-disabled;
 }
@@ -66,6 +70,10 @@ body {
 
 ._u-text-disabled {
   opacity: 0.3;
+}
+
+._u-cursor-pointer {
+  cursor: pointer;
 }
 
 ._u-flex-separated-content {

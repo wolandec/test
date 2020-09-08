@@ -40,9 +40,12 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    getSortedOperations: (state): Function => {
-      return (sortField: keyof Operation): Array<Operation> => {
-        return state.operations?.sort(
+    getSortedOperations: (): Function => {
+      return (
+        operations: Array<Operation>,
+        sortField: keyof Operation
+      ): Array<Operation> => {
+        return operations?.sort(
           (operation: Operation, operation2: Operation) => {
             function createDateObject(operationDate: Operation["date"]) {
               const returnDate: Date = new Date();
@@ -67,6 +70,18 @@ export default new Vuex.Store({
             return operation2[sortField] - operation[sortField];
           }
         );
+      };
+    },
+    getFilteredOperations: (): Function => {
+      return (
+        operations: Array<Operation>,
+        filter: string
+      ): Array<Operation> => {
+        if (filter === "none") return operations;
+        return operations?.filter((operation: Operation) => {
+          if (filter === "done") return operation.assessment;
+          if (filter === "plan") return !operation.assessment;
+        });
       };
     }
   },
