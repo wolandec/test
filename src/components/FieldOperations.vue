@@ -21,13 +21,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import UiButton from "@/components/UiButton.vue";
 import UiFieldOperationsTable from "@/components/UiFieldOperationsTable.vue";
 
 @Component({ components: { UiButton, UiFieldOperationsTable } })
 export default class FieldOperations extends Vue {
   private sortField: any = null;
+
+  @Watch('$route')
+  routeHandler() {
+    this.sortField = this.$route.params.sortField;
+  }
 
   getLocale(): void {
     this.$store.dispatch("setLocale", "ru-Ru");

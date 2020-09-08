@@ -113,7 +113,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import Operation, { OperationType, Assessment } from "@/models/Operation";
 import { State } from "vuex-class/lib";
 
@@ -129,6 +129,11 @@ export default class UiFieldOperationsTable extends Vue {
   public locale!: any;
 
   private sortField: keyof Operation | null = null;
+
+  @Watch("propSortField")
+  propSortFieldHandler() {
+    this.sortField = this.propSortField;
+  }
 
   get preparedForViewOperations() {
     if (!this.operations) return [];

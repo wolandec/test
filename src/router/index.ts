@@ -14,19 +14,20 @@ const routes: Array<RouteConfig> = [
       import(/* webpackChunkName: "about" */ "../views/Main.vue"),
     children: [
       {
-        path:"/fieldOperations/sort/:sortField",
-        name: 'SortedFieldOperations'
+        path: "/fieldOperations/sort/:sortField",
+        name: "SortedFieldOperations"
       }
     ]
   },
   {
-    path: "*/*",
+    path: "/",
     name: "FieldOperations",
     redirect: "/fieldOperations"
   }
 ];
 
 const router = new VueRouter({
+  mode: "history",
   routes
 });
 
