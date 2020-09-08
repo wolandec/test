@@ -57,6 +57,7 @@ export default class FieldOperations extends Vue {
   created() {
     this.getLocale();
     this.sortField = this.$route.params.sortField;
+    this.filter = this.$route.params.filter;
   }
 
   handleSortFieldChange(sortField: keyof Operation) {
