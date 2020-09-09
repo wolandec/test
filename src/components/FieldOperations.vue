@@ -37,7 +37,7 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import UiButton from "@/components/UiButton.vue";
 import UiFieldOperationsTable from "@/components/UiFieldOperationsTable.vue";
-import Operation from "@/models/Operation";
+import Operation, { OperationFilter } from "@/models/Operation";
 
 const DEFAULT_FILTER = "none";
 
@@ -73,7 +73,7 @@ export default class FieldOperations extends Vue {
     this.pushRoute();
   }
 
-  handleFilter(filter: string) {
+  handleFilter(filter: OperationFilter) {
     this.filter = filter;
     this.pushRoute();
   }
@@ -85,7 +85,7 @@ export default class FieldOperations extends Vue {
     });
   }
 
-  filterClass(filter: string) {
+  filterClass(filter: OperationFilter) {
     if (filter === this.filter) return { "_u-text-color-fourthy": true };
     return {};
   }
