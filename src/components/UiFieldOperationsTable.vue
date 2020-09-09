@@ -10,9 +10,11 @@
             viewBox="0 0 10 5"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            :transform="`rotate(${sortDirection === 1 ? 0 : 180})`"
             :class="sortedBySvgFillClass('date')"
           >
             <path
+              v-if="sortField === 'date'"
               fill-rule="evenodd"
               clip-rule="evenodd"
               d="M10 0L5 5L0 0H10Z"
@@ -28,10 +30,12 @@
             height="5"
             viewBox="0 0 10 5"
             fill="none"
+            :transform="`rotate(${sortDirection === 1 ? 0 : 180})`"
             :class="sortedBySvgFillClass('type')"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
+              v-if="sortField === 'type'"
               fill-rule="evenodd"
               clip-rule="evenodd"
               d="M10 0L5 5L0 0H10Z"
@@ -47,10 +51,12 @@
             height="5"
             viewBox="0 0 10 5"
             fill="none"
+            :transform="`rotate(${sortDirection === 1 ? 0 : 180})`"
             :class="sortedBySvgFillClass('area')"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
+              v-if="sortField === 'area'"
               fill-rule="evenodd"
               clip-rule="evenodd"
               d="M10 0L5 5L0 0H10Z"
@@ -66,10 +72,12 @@
             height="5"
             viewBox="0 0 10 5"
             fill="none"
+            :transform="`rotate(${sortDirection === 1 ? 0 : 180})`"
             :class="sortedBySvgFillClass('assessment')"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
+              v-if="sortField === 'assessment'"
               fill-rule="evenodd"
               clip-rule="evenodd"
               d="M10 0L5 5L0 0H10Z"
@@ -122,6 +130,9 @@ export default class UiFieldOperationsTable extends Vue {
   @Prop({ type: String, default: "date" })
   readonly propSortField!: keyof Operation;
 
+  @Prop({ type: Number, default: 1 })
+  readonly propSortDirection!: Number;
+
   @Prop({ type: String, default: "none" })
   readonly propFilter!: string;
 
@@ -132,10 +143,16 @@ export default class UiFieldOperationsTable extends Vue {
   public locale!: any;
 
   private sortField: keyof Operation | null = null;
+  private sortDirection: keyof Operation | null = null;
 
   @Watch("propSortField")
   propSortFieldHandler() {
     this.sortField = this.propSortField;
+  }
+
+  @Watch("propSortDirection")
+  propSortDirectionHandler() {
+    this.sortDirection = this.propSortDirection;
   }
 
   get preparedForViewOperations() {
@@ -149,7 +166,8 @@ export default class UiFieldOperationsTable extends Vue {
     }
     const sortedOperations = this.$store.getters.getSortedOperations(
       operations ? operations : this.operations,
-      this.sortField
+      this.sortField,
+      this.sortDirection
     );
     return sortedOperations.map((operation: Operation) => {
       return {
@@ -168,6 +186,7 @@ export default class UiFieldOperationsTable extends Vue {
 
   created() {
     this.sortField = this.propSortField;
+    this.sortDirection = this.propSortDirection;
   }
 
   sortedBySvgFillClass(field: keyof Operation) {
@@ -191,9 +210,17 @@ export default class UiFieldOperationsTable extends Vue {
     }
   }
 
-    sortFieldHandler(field: keyof Operation) {
-    this.sortField = field;
-    this.$emit("sortField", this.sortField);
+  sortFieldHandler(field: keyof Operation) {
+    if (this.sortField === field) {
+      this.sortDirection *= -1;
+    } else {
+      this.sortField = field;
+      this.sortDirection = 1;
+    }
+    this.$emit("sortField", {
+      sortField: this.sortField,
+      sortDirection: this.sortDirection
+    });
   }
 }
 </script>

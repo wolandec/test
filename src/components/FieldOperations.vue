@@ -26,6 +26,7 @@
       <ui-field-operations-table
         @sortField="handleSortFieldChange"
         :propSortField="sortField"
+        :propSortDirection="sortDirection"
         :propFilter="filter"
       >
       </ui-field-operations-table>
@@ -37,20 +38,20 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import UiButton from "@/components/UiButton.vue";
 import UiFieldOperationsTable from "@/components/UiFieldOperationsTable.vue";
-import Operation, { OperationFilter } from "@/models/Operation";
+import { OperationFilter } from "@/models/Operation";
 
 const DEFAULT_FILTER = "none";
 
 @Component({ components: { UiButton, UiFieldOperationsTable } })
 export default class FieldOperations extends Vue {
   private sortField: string = "";
+  private sortDirection: string = "";
 
   private filter: string = DEFAULT_FILTER;
 
   @Watch("$route")
   routeHandler() {
-    this.sortField = this.$route.params.sortField;
-    this.filter = this.$route.params.filter;
+    this.syncPropsAndRoute();
   }
 
   setLocale(): void {
@@ -60,7 +61,12 @@ export default class FieldOperations extends Vue {
   created() {
     this.setLocale();
     this.loadOperations();
+    this.syncPropsAndRoute();
+  }
+
+  syncPropsAndRoute() {
     this.sortField = this.$route.params.sortField;
+    this.sortDirection = this.$route.params.sortDirection;
     this.filter = this.$route.params.filter || DEFAULT_FILTER;
   }
 
@@ -68,8 +74,9 @@ export default class FieldOperations extends Vue {
     this.$store.dispatch("loadOperations");
   }
 
-  handleSortFieldChange(sortField: keyof Operation) {
+  handleSortFieldChange({ sortField, sortDirection }) {
     this.sortField = sortField;
+    this.sortDirection = sortDirection;
     this.pushRoute();
   }
 
@@ -81,7 +88,11 @@ export default class FieldOperations extends Vue {
   pushRoute(): void {
     this.$router.push({
       name: "QueryFieldOperations",
-      params: { sortField: this.sortField, filter: this.filter }
+      params: {
+        sortField: this.sortField,
+        filter: this.filter,
+        sortDirection: this.sortDirection
+      }
     });
   }
 

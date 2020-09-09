@@ -1,4 +1,8 @@
-import Operation, { OperationType, Assessment, OperationFilter } from "@/models/Operation";
+import Operation, {
+  OperationType,
+  Assessment,
+  OperationFilter
+} from "@/models/Operation";
 
 export default class FieldService {
   private operations: Array<Operation> = [
@@ -140,11 +144,15 @@ export default class FieldService {
    * Сортирует массив операций по заданному полю по убыванию
    * @param {Array<Operation>} operations
    * @param {keyof Operation} sortField
+   * @param {1 | Number(-1)} sortDirection
+   * @param {Array<string>} locale
    * @returns {Promise<Operation>}
    */
   getSortedOperations(
     operations: Array<Operation>,
-    sortField: keyof Operation
+    sortField: keyof Operation,
+    sortDirection: 1 | -1,
+    locale: any
   ): Array<Operation> {
     return operations?.sort((operation: Operation, operation2: Operation) => {
       function createDateObject(operationDate: Operation["date"]) {
@@ -161,23 +169,31 @@ export default class FieldService {
         const operationDate = createDateObject(operation.date);
         const operation2Date = createDateObject(operation2.date);
         return operation2Date > operationDate
-          ? 1
+          ? sortDirection * -1
           : operation2Date < operationDate
-          ? -1
+          ? sortDirection * 1
           : 0;
       }
+      if (sortField === "type") {
+        return (
+          sortDirection *
+          locale[OperationType[operation[sortField]]].localeCompare(
+            locale[OperationType[operation2[sortField]]]
+          )
+        );
+      }
       // @ts-ignore
-      return operation2[sortField] - operation[sortField];
+      return sortDirection * (operation[sortField] - operation2[sortField]);
     });
   }
 
-    /**
-     * Фильтрует массив операций по заданному фильтру
-     * @param {Array<Operation>} operations
-     * @param {filter OperationFilter} filter
-     * @returns {Promise<Operation>}
-     */
-    getFilteredOperations(
+  /**
+   * Фильтрует массив операций по заданному фильтру
+   * @param {Array<Operation>} operations
+   * @param {filter OperationFilter} filter
+   * @returns {Promise<Operation>}
+   */
+  getFilteredOperations(
     operations: Array<Operation>,
     filter: OperationFilter
   ): Array<Operation> {

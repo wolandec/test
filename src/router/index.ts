@@ -14,7 +14,7 @@ const routes: Array<RouteConfig> = [
       import(/* webpackChunkName: "about" */ "../views/Main.vue"),
     children: [
       {
-        path: "/field/operations/filter/:filter/sort/:sortField",
+        path: "/field/operations/filter/:filter/sort/:sortField/:sortDirection",
         name: "QueryFieldOperations"
       }
     ]

@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import LocaleService from "@/services/LocaleService";
 import FieldService from "@/services/FieldService";
-import Operation from "@/models/Operation";
+import Operation, {OperationFilter} from "@/models/Operation";
 
 const fieldService = new FieldService();
 const localeService: LocaleService = new LocaleService();
@@ -40,18 +40,19 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    getSortedOperations: (): Function => {
+    getSortedOperations: (state): Function => {
       return (
         operations: Array<Operation>,
-        sortField: keyof Operation
+        sortField: keyof Operation,
+        sortDirection: 1 | -1 = 1
       ): Array<Operation> => {
-        return fieldService.getSortedOperations(operations, sortField);
+        return fieldService.getSortedOperations(operations, sortField, sortDirection, state.locale);
       };
     },
     getFilteredOperations: (): Function => {
       return (
         operations: Array<Operation>,
-        filter: string
+        filter: OperationFilter
       ): Array<Operation> => {
         return fieldService.getFilteredOperations(operations, filter);
       };

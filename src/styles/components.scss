@@ -54,8 +54,13 @@
   }
   & th {
     cursor: pointer;
+    transition: all 0.1s;
     &:hover {
       background-color: $color-secondary-2;
+    }
+
+    & svg {
+      transition: all 0.2s;
     }
   }
 }
