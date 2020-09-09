@@ -39,11 +39,13 @@ import UiButton from "@/components/UiButton.vue";
 import UiFieldOperationsTable from "@/components/UiFieldOperationsTable.vue";
 import Operation from "@/models/Operation";
 
+const DEFAULT_FILTER = "none";
+
 @Component({ components: { UiButton, UiFieldOperationsTable } })
 export default class FieldOperations extends Vue {
   private sortField: string = "";
 
-  private filter: string = "none";
+  private filter: string = DEFAULT_FILTER;
 
   @Watch("$route")
   routeHandler() {
@@ -51,13 +53,19 @@ export default class FieldOperations extends Vue {
     this.filter = this.$route.params.filter;
   }
 
-  getLocale(): void {
+  setLocale(): void {
     this.$store.dispatch("setLocale", "ru-Ru");
   }
+
   created() {
-    this.getLocale();
+    this.setLocale();
+    this.loadOperations();
     this.sortField = this.$route.params.sortField;
-    this.filter = this.$route.params.filter;
+    this.filter = this.$route.params.filter || DEFAULT_FILTER;
+  }
+
+  loadOperations(): void {
+    this.$store.dispatch("loadOperations");
   }
 
   handleSortFieldChange(sortField: keyof Operation) {

@@ -30,7 +30,7 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    async setOperations(state) {
+    async loadOperations(state) {
       const operations = await fieldService.getOperations();
       if (operations) state.commit("changeOperations", operations);
     },

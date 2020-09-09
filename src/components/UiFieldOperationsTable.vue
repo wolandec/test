@@ -167,7 +167,6 @@ export default class UiFieldOperationsTable extends Vue {
   }
 
   created() {
-    this.setOperations();
     this.sortField = this.propSortField;
   }
 
@@ -192,11 +191,7 @@ export default class UiFieldOperationsTable extends Vue {
     }
   }
 
-  setOperations(): void {
-    this.$store.dispatch("setOperations");
-  }
-
-  sortFieldHandler(field: keyof Operation) {
+    sortFieldHandler(field: keyof Operation) {
     this.sortField = field;
     this.$emit("sortField", this.sortField);
   }
