@@ -25,9 +25,9 @@
     <div class="field-operations__table">
       <ui-field-operations-table
         @sortField="handleSortFieldChange"
-        :propSortField="sortField"
-        :propSortDirection="sortDirection"
-        :propFilter="filter"
+        :sortField="sortField"
+        :sortDirection="sortDirection"
+        :filter="filter"
       >
       </ui-field-operations-table>
     </div>
@@ -35,19 +35,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import {Component, Vue, Watch} from "vue-property-decorator";
 import UiButton from "@/components/UiButton.vue";
 import UiFieldOperationsTable from "@/components/UiFieldOperationsTable.vue";
-import { OperationFilter } from "@/models/Operation";
+import Operation, {OperationFilter, SortDirection} from "@/models/Operation";
 
 const DEFAULT_FILTER = "none";
+const DEFAULT_SORT_FIELD = "date";
+const DEFAULT_SORT_DIRECTION = 1;
 
 @Component({ components: { UiButton, UiFieldOperationsTable } })
 export default class FieldOperations extends Vue {
-  private sortField: string = "";
-  private sortDirection: string = "";
+  private sortField: keyof Operation = DEFAULT_SORT_FIELD;
+  private sortDirection: SortDirection = DEFAULT_SORT_DIRECTION;
 
-  private filter: string = DEFAULT_FILTER;
+  private filter: OperationFilter = DEFAULT_FILTER;
 
   @Watch("$route")
   routeHandler() {
@@ -65,8 +67,12 @@ export default class FieldOperations extends Vue {
   }
 
   syncPropsAndRoute() {
-    this.sortField = this.$route.params.sortField;
-    this.sortDirection = this.$route.params.sortDirection;
+    //TODO сделать проверку sortField на соответствие типу keyof Operation
+    this.sortField = this.$route.params.sortField || DEFAULT_SORT_FIELD;
+    //TODO сделать проверку sortDirection на соответствие типу SortDirection
+    this.sortDirection =
+      +this.$route.params.sortDirection || DEFAULT_SORT_DIRECTION;
+    //TODO сделать проверку sortDirection на соответствие типу OperationFilter
     this.filter = this.$route.params.filter || DEFAULT_FILTER;
   }
 
@@ -74,6 +80,7 @@ export default class FieldOperations extends Vue {
     this.$store.dispatch("loadOperations");
   }
 
+  //@ts-ignore
   handleSortFieldChange({ sortField, sortDirection }) {
     this.sortField = sortField;
     this.sortDirection = sortDirection;
@@ -91,13 +98,13 @@ export default class FieldOperations extends Vue {
       params: {
         sortField: this.sortField,
         filter: this.filter,
-        sortDirection: this.sortDirection
+        sortDirection: String(this.sortDirection)
       }
     });
   }
 
   filterClass(filter: OperationFilter) {
-    if (filter === this.filter) return { "_u-text-color-fourthy": true };
+    if (filter === this.filter) return { "_u-text-color-fourthly": true };
     return {};
   }
 }

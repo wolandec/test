@@ -46,7 +46,12 @@ export default new Vuex.Store({
         sortField: keyof Operation,
         sortDirection: 1 | -1 = 1
       ): Array<Operation> => {
-        return fieldService.getSortedOperations(operations, sortField, sortDirection, state.locale);
+        return fieldService.getSortedOperations(
+          operations,
+          sortField,
+          sortDirection,
+          state.locale
+        );
       };
     },
     getFilteredOperations: (): Function => {

@@ -121,20 +121,20 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import Operation, { OperationType, Assessment } from "@/models/Operation";
-import { State } from "vuex-class/lib";
+import {Component, Prop, Vue} from "vue-property-decorator";
+import Operation, {Assessment, OperationFilter, OperationType, SortDirection} from "@/models/Operation";
+import {State} from "vuex-class/lib";
 
 @Component
 export default class UiFieldOperationsTable extends Vue {
   @Prop({ type: String, default: "date" })
-  readonly propSortField!: keyof Operation;
+  readonly sortField!: keyof Operation;
 
   @Prop({ type: Number, default: 1 })
-  readonly propSortDirection!: Number;
+  readonly sortDirection!: SortDirection;
 
   @Prop({ type: String, default: "none" })
-  readonly propFilter!: string;
+  readonly filter!: keyof OperationFilter;
 
   @State
   public operations!: Array<Operation>;
@@ -142,26 +142,14 @@ export default class UiFieldOperationsTable extends Vue {
   @State
   public locale!: any;
 
-  private sortField: keyof Operation | null = null;
-  private sortDirection: keyof Operation | null = null;
-
-  @Watch("propSortField")
-  propSortFieldHandler() {
-    this.sortField = this.propSortField;
-  }
-
-  @Watch("propSortDirection")
-  propSortDirectionHandler() {
-    this.sortDirection = this.propSortDirection;
-  }
-
   get preparedForViewOperations() {
     if (!this.operations) return [];
     let operations;
-    if (this.propFilter !== "none") {
+    //@ts-ignore
+    if (this.filter !== "none") {
       operations = this.$store.getters.getFilteredOperations(
         this.operations,
-        this.propFilter
+        this.filter
       );
     }
     const sortedOperations = this.$store.getters.getSortedOperations(
@@ -184,13 +172,8 @@ export default class UiFieldOperationsTable extends Vue {
     });
   }
 
-  created() {
-    this.sortField = this.propSortField;
-    this.sortDirection = this.propSortDirection;
-  }
-
   sortedBySvgFillClass(field: keyof Operation) {
-    if (field === this.sortField) return { "_u-fill-color-fourthy": true };
+    if (field === this.sortField) return { "_u-fill-color-fourthly": true };
     return { "_u-fill-color-inactive": true };
   }
 
@@ -211,15 +194,18 @@ export default class UiFieldOperationsTable extends Vue {
   }
 
   sortFieldHandler(field: keyof Operation) {
+    let newSortDirection: SortDirection;
+    let newSortField: keyof Operation = this.sortField;
     if (this.sortField === field) {
-      this.sortDirection *= -1;
+      newSortDirection = this.sortDirection;
+      newSortDirection *= -1;
     } else {
-      this.sortField = field;
-      this.sortDirection = 1;
+      newSortField = field;
+      newSortDirection = 1;
     }
     this.$emit("sortField", {
-      sortField: this.sortField,
-      sortDirection: this.sortDirection
+      sortField: newSortField,
+      sortDirection: newSortDirection
     });
   }
 }

@@ -1,5 +1,5 @@
 import Vue from "vue";
-import VueRouter, { RouteConfig } from "vue-router";
+import VueRouter, {RouteConfig} from "vue-router";
 
 Vue.use(VueRouter);
 
@@ -20,7 +20,7 @@ const routes: Array<RouteConfig> = [
     ]
   },
   {
-    path: "/",
+    path: "*/*",
     name: "FieldOperations",
     redirect: "/field/operations"
   }

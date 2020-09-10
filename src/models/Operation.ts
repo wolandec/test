@@ -1,6 +1,7 @@
 import TDate from "./TDate";
 
 export type OperationFilter = "none" | "done" | "plan";
+export type SortDirection = 1 | -1;
 
 export enum OperationType {
   PLOWING = 0, // Вспашка
