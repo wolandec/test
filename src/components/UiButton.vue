@@ -15,17 +15,17 @@
         fill="white"
       />
     </svg>
-    <span>{{ msg }}</span>
+    <span>{{ text }}</span>
   </button>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import {Component, Prop, Vue} from "vue-property-decorator";
 
 @Component
 export default class UiButton extends Vue {
   @Prop({ required: false, type: String, default: "UiButton" })
-  private msg!: string;
+  private text!: string;
   @Prop({ required: false, type: String, default: "Plus" })
   private type!: string;
 }
