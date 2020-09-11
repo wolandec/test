@@ -14,6 +14,10 @@ $color-inactive: #a7a9ac;
 
 $font-display: "Ubuntu", sans-serif;
 
+
+$pad-screen: 450px;
+
+
 *,
 *::before,
 *::after {
@@ -25,6 +29,9 @@ $font-display: "Ubuntu", sans-serif;
 html {
   box-sizing: border-box;
   font-size: 62.5%;
+  @media (max-width: $pad-screen){
+    font-size: 42.5%;
+  }
 }
 
 body {

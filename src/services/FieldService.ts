@@ -1,8 +1,4 @@
-import Operation, {
-  OperationType,
-  Assessment,
-  OperationFilter
-} from "@/models/Operation";
+import Operation, {Assessment, OperationFilter, OperationType} from "@/models/Operation";
 
 export default class FieldService {
   private operations: Array<Operation> = [
@@ -145,7 +141,7 @@ export default class FieldService {
    * @param {Array<Operation>} operations
    * @param {keyof Operation} sortField
    * @param {1 | Number(-1)} sortDirection
-   * @param {Array<string>} locale
+   * @param {any} locale
    * @returns {Promise<Operation>}
    */
   getSortedOperations(

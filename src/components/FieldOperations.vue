@@ -65,14 +65,13 @@ export default class FieldOperations extends Vue {
     this.loadOperations();
     this.syncPropsAndRoute();
   }
-
   syncPropsAndRoute() {
-    //TODO сделать проверку sortField на соответствие типу keyof Operation
+    //@ts-ignore
     this.sortField = this.$route.params.sortField || DEFAULT_SORT_FIELD;
-    //TODO сделать проверку sortDirection на соответствие типу SortDirection
+    //@ts-ignore
     this.sortDirection =
       +this.$route.params.sortDirection || DEFAULT_SORT_DIRECTION;
-    //TODO сделать проверку sortDirection на соответствие типу OperationFilter
+    //@ts-ignore
     this.filter = this.$route.params.filter || DEFAULT_FILTER;
   }
 

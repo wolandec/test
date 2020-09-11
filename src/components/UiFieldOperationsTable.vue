@@ -134,7 +134,7 @@ export default class UiFieldOperationsTable extends Vue {
   readonly sortDirection!: SortDirection;
 
   @Prop({ type: String, default: "none" })
-  readonly filter!: keyof OperationFilter;
+  readonly filter!: keyof OperationFilter | "none";
 
   @State
   public operations!: Array<Operation>;
@@ -145,7 +145,6 @@ export default class UiFieldOperationsTable extends Vue {
   get preparedForViewOperations() {
     if (!this.operations) return [];
     let operations;
-    //@ts-ignore
     if (this.filter !== "none") {
       operations = this.$store.getters.getFilteredOperations(
         this.operations,
@@ -197,8 +196,7 @@ export default class UiFieldOperationsTable extends Vue {
     let newSortDirection: SortDirection;
     let newSortField: keyof Operation = this.sortField;
     if (this.sortField === field) {
-      newSortDirection = this.sortDirection;
-      newSortDirection *= -1;
+      newSortDirection = this.sortDirection === 1 ? -1 : 1;
     } else {
       newSortField = field;
       newSortDirection = 1;

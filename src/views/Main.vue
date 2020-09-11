@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import {Component, Vue} from "vue-property-decorator";
 import FieldOperations from "@/components/FieldOperations.vue"; // @ is an alias to /src
 
 @Component({
@@ -44,6 +44,10 @@ export default class Home extends Vue {}
     padding: 2.6rem;
     background-color: $color-ternary;
     box-shadow: 0 0 2rem rgba(0, 0, 0, 0.2);
+
+    @media (max-width: $pad-screen){
+      width: 99%;
+    }
   }
 }
 </style>
