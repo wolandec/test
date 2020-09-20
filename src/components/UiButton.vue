@@ -1,5 +1,5 @@
 <template>
-  <button class="button _u-flex-separated-content">
+  <button @click="$emit('clicked')" class="button _u-flex-separated-content">
     <svg
       width="16"
       height="16"
@@ -15,7 +15,7 @@
         fill="white"
       />
     </svg>
-    <span>{{ text }}</span>
+    <span>{{ msg }}</span>
   </button>
 </template>
 
@@ -25,7 +25,7 @@ import {Component, Prop, Vue} from "vue-property-decorator";
 @Component
 export default class UiButton extends Vue {
   @Prop({ required: false, type: String, default: "UiButton" })
-  private text!: string;
+  private msg!: string;
   @Prop({ required: false, type: String, default: "Plus" })
   private type!: string;
 }
