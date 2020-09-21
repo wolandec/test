@@ -19,7 +19,7 @@
         </h2>
       </div>
       <div class="field-operations-header__buttons">
-        <ui-button msg="Добавить операцию"></ui-button>
+        <ui-button text="Добавить операцию"></ui-button>
       </div>
     </div>
     <div class="field-operations__table">

@@ -1,15 +1,15 @@
 import "../styles/_base.scss";
 import "../styles/components.scss";
 
-import UIButton from "../components/UiButton";
+import UiButton from "../components/UiButton";
 
 export default {
-  title: "Example/UIButton",
-  component: UIButton,
+  title: "Example/UiButton",
+  component: UiButton,
   argTypes: {
     text: {
       description: `Текст который будет написан на кнопке`,
-      defaultValue: "UIButton"
+      defaultValue: "UiButton"
     },
     type: {
       description: `Тип кнопки, определяет какая иконка будет отображаться`,
@@ -27,7 +27,7 @@ export default {
 
 const Template = (args, { argTypes }) => ({
   props: Object.keys(argTypes),
-  components: { UiButton: UIButton },
+  components: { UiButton: UiButton },
   template: '<ui-button @clicked="onClick" v-bind="$props"/>'
 });
 

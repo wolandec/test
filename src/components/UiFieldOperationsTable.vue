@@ -122,7 +122,7 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from "vue-property-decorator";
-import Operation, {Assessment, OperationFilter, OperationType, SortDirection} from "@/models/Operation";
+import Operation, {Assessment, OperationFilter, OperationType, SortDirection} from "../models/Operation";
 import {State} from "vuex-class/lib";
 
 @Component
