@@ -7,8 +7,18 @@ export default {
   title: "Example/UIButton",
   component: UIButton,
   argTypes: {
-    msg: "Hello!",
-    type: "Plus",
+    text: {
+      description: `Текст который будет написан на кнопке`,
+      defaultValue: "UIButton"
+    },
+    type: {
+      description: `Тип кнопки, определяет какая иконка будет отображаться`,
+      defaultValue: "Plus",
+      control: {
+        type: "select",
+        options: ["Plus", "NoIcon"]
+      }
+    },
     onClick: {
       action: "clicked"
     }
@@ -21,7 +31,13 @@ const Template = (args, { argTypes }) => ({
   template: '<ui-button @clicked="onClick" v-bind="$props"/>'
 });
 
-export const Primary = Template.bind({});
-Primary.args = {
-  msg: "Hello button!"
+export const NoIcon = Template.bind({});
+NoIcon.args = {
+  text: "I have no icon",
+  type: "NoIcon"
+};
+
+export const Plus = Template.bind({});
+Plus.args = {
+  text: "Hello button!"
 };
