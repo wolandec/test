@@ -1,4 +1,4 @@
-import locale from "@/locales/intterra-ru-RU.json";
+import locale from "../locales/intterra-ru-RU.json";
 
 export default class LocaleService {
   /**

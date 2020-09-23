@@ -1,8 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import LocaleService from "@/services/LocaleService";
-import FieldService from "@/services/FieldService";
-import Operation, {OperationFilter} from "@/models/Operation";
+import LocaleService from "../services/LocaleService";
+import FieldService from "../services/FieldService";
+import Operation, { OperationFilter } from "../models/Operation";
 
 const fieldService = new FieldService();
 const localeService: LocaleService = new LocaleService();

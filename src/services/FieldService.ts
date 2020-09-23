@@ -1,4 +1,8 @@
-import Operation, {Assessment, OperationFilter, OperationType} from "@/models/Operation";
+import Operation, {
+  Assessment,
+  OperationFilter,
+  OperationType
+} from "../models/Operation";
 
 export default class FieldService {
   private operations: Array<Operation> = [
@@ -142,7 +146,7 @@ export default class FieldService {
    * @param {keyof Operation} sortField
    * @param {1 | Number(-1)} sortDirection
    * @param {any} locale
-   * @returns {Promise<Operation>}
+   * @returns {Array<Operation>}
    */
   getSortedOperations(
     operations: Array<Operation>,
@@ -150,7 +154,7 @@ export default class FieldService {
     sortDirection: 1 | -1,
     locale: any
   ): Array<Operation> {
-    return operations?.sort((operation: Operation, operation2: Operation) => {
+    return operations.sort((operation: Operation, operation2: Operation) => {
       function createDateObject(operationDate: Operation["date"]) {
         const returnDate: Date = new Date();
         returnDate.setFullYear(
@@ -187,18 +191,16 @@ export default class FieldService {
    * Фильтрует массив операций по заданному фильтру
    * @param {Array<Operation>} operations
    * @param {filter OperationFilter} filter
-   * @returns {Promise<Operation>}
+   * @returns {Array<Operation>}
    */
   getFilteredOperations(
     operations: Array<Operation>,
     filter: OperationFilter
   ): Array<Operation> {
-    {
-      if (filter === "none") return operations;
-      return operations?.filter((operation: Operation) => {
-        if (filter === "done") return operation.assessment;
-        if (filter === "plan") return !operation.assessment;
-      });
-    }
+    if (filter === "none") return operations;
+    return operations.filter((operation: Operation) => {
+      if (filter === "done") return operation.assessment;
+      if (filter === "plan") return !operation.assessment;
+    });
   }
 }

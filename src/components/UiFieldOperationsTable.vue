@@ -121,9 +121,13 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from "vue-property-decorator";
-import Operation, {Assessment, OperationFilter, OperationType, SortDirection} from "../models/Operation";
-import {State} from "vuex-class/lib";
+import { Component, Prop, Vue } from "vue-property-decorator";
+import Operation, {
+  Assessment,
+  OperationFilter,
+  OperationType,
+  SortDirection
+} from "../models/Operation";
 
 @Component
 export default class UiFieldOperationsTable extends Vue {
@@ -136,10 +140,10 @@ export default class UiFieldOperationsTable extends Vue {
   @Prop({ type: String, default: "none" })
   readonly filter!: keyof OperationFilter | "none";
 
-  @State
+  @Prop({ type: Array, default: [] })
   public operations!: Array<Operation>;
 
-  @State
+  @Prop({ type: Object, default: {} })
   public locale!: any;
 
   get preparedForViewOperations() {
@@ -201,7 +205,7 @@ export default class UiFieldOperationsTable extends Vue {
       newSortField = field;
       newSortDirection = 1;
     }
-    this.$emit("sortField", {
+    this.$emit("sortFieldChange", {
       sortField: newSortField,
       sortDirection: newSortDirection
     });

@@ -24,10 +24,12 @@
     </div>
     <div class="field-operations__table">
       <ui-field-operations-table
-        @sortField="handleSortFieldChange"
+        @sortFieldChange="handleSortFieldChange"
         :sortField="sortField"
         :sortDirection="sortDirection"
         :filter="filter"
+        :operations="operations"
+        :locale="locale"
       >
       </ui-field-operations-table>
     </div>
@@ -35,10 +37,11 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue, Watch} from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import UiButton from "@/components/UiButton.vue";
 import UiFieldOperationsTable from "@/components/UiFieldOperationsTable.vue";
-import Operation, {OperationFilter, SortDirection} from "@/models/Operation";
+import Operation, { OperationFilter, SortDirection } from "@/models/Operation";
+import {State} from "vuex-class";
 
 const DEFAULT_FILTER = "none";
 const DEFAULT_SORT_FIELD = "date";
@@ -46,6 +49,12 @@ const DEFAULT_SORT_DIRECTION = 1;
 
 @Component({ components: { UiButton, UiFieldOperationsTable } })
 export default class FieldOperations extends Vue {
+  @State
+  public operations!: Array<Operation>;
+
+  @State
+  public locale!: any;
+
   private sortField: keyof Operation = DEFAULT_SORT_FIELD;
   private sortDirection: SortDirection = DEFAULT_SORT_DIRECTION;
 
