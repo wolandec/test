@@ -21,13 +21,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { defineComponent } from "@vue/composition-api";
 
-@Component
-export default class UiButton extends Vue {
-  @Prop({ required: false, type: String, default: "UiButton" })
-  private text!: string;
-  @Prop({ required: false, type: String, default: "Plus" })
-  private type!: string;
-}
+export default defineComponent({
+  props: {
+    text: { required: false, type: String, default: "UiButton" },
+    type: { required: false, type: String, default: "Plus" }
+  },
+  setup(props) {
+    return {
+      props
+    };
+  }
+});
 </script>

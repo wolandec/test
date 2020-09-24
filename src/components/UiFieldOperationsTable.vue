@@ -121,94 +121,100 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { defineComponent, computed } from "@vue/composition-api";
 import Operation, {
   Assessment,
-  OperationFilter,
   OperationType,
   SortDirection
 } from "../models/Operation";
 
-@Component
-export default class UiFieldOperationsTable extends Vue {
-  @Prop({ type: String, default: "date" })
-  readonly sortField!: keyof Operation;
-
-  @Prop({ type: Number, default: 1 })
-  readonly sortDirection!: SortDirection;
-
-  @Prop({ type: String, default: "none" })
-  readonly filter!: keyof OperationFilter | "none";
-
-  @Prop({ type: Array, default: [] })
-  public operations!: Array<Operation>;
-
-  @Prop({ type: Object, default: {} })
-  public locale!: any;
-
-  get preparedForViewOperations() {
-    if (!this.operations) return [];
-    let operations;
-    if (this.filter !== "none") {
-      operations = this.$store.getters.getFilteredOperations(
-        this.operations,
-        this.filter
+export default defineComponent({
+  name: "UiFieldOperationsTable",
+  props: {
+    sortField: {
+      type: String,
+      default: "date"
+    },
+    sortDirection: {
+      type: Number,
+      default: 1
+    },
+    filter: { type: String, default: "none" },
+    operations: { type: Array, default: [] },
+    locale: { type: Object, default: {} }
+  },
+  setup(props, context) {
+    const preparedForViewOperations = computed(function() {
+      if (!props.operations) return [];
+      let operations;
+      if (props.filter !== "none") {
+        operations = context.root.$store.getters.getFilteredOperations(
+          props.operations,
+          props.filter
+        );
+      }
+      const sortedOperations = context.root.$store.getters.getSortedOperations(
+        operations ? operations : props.operations,
+        props.sortField,
+        props.sortDirection
       );
-    }
-    const sortedOperations = this.$store.getters.getSortedOperations(
-      operations ? operations : this.operations,
-      this.sortField,
-      this.sortDirection
-    );
-    return sortedOperations.map((operation: Operation) => {
-      return {
-        date: `${operation.date.day} ${
-          this.locale["MONTHS"][operation.date.month]
-        } ${operation.date.year}`,
-        operation: OperationType[operation.type],
-        area: operation.area,
-        assessment: operation.assessment
-          ? Assessment[operation.assessment]
-          : "",
-        comment: operation.comment
-      };
-    });
-  }
-
-  sortedBySvgFillClass(field: keyof Operation) {
-    if (field === this.sortField) return { "_u-fill-color-fourthly": true };
-    return { "_u-fill-color-inactive": true };
-  }
-
-  operationAssessmentClass(assessment: String) {
-    switch (assessment) {
-      case Assessment[Assessment.BADLY]:
-        return { "_u-fill-color-fault": true };
-      case Assessment[Assessment.SATISFACTORILY]:
-        return { "_u-fill-color-normal": true };
-      case Assessment[Assessment.EXCELLENT]:
-        return { "_u-fill-color-success": true };
-      default:
+      return sortedOperations.map((operation: Operation) => {
         return {
-          "_u-fill-color-disabled": true,
-          "_u-text-disabled": true
+          date: `${operation.date.day} ${
+            props.locale["MONTHS"][operation.date.month]
+          } ${operation.date.year}`,
+          operation: OperationType[operation.type],
+          area: operation.area,
+          assessment: operation.assessment
+            ? Assessment[operation.assessment]
+            : "",
+          comment: operation.comment
         };
-    }
-  }
-
-  sortFieldHandler(field: keyof Operation) {
-    let newSortDirection: SortDirection;
-    let newSortField: keyof Operation = this.sortField;
-    if (this.sortField === field) {
-      newSortDirection = this.sortDirection === 1 ? -1 : 1;
-    } else {
-      newSortField = field;
-      newSortDirection = 1;
-    }
-    this.$emit("sortFieldChange", {
-      sortField: newSortField,
-      sortDirection: newSortDirection
+      });
     });
+
+    const sortedBySvgFillClass = function(field: keyof Operation) {
+      if (field === props.sortField) return { "_u-fill-color-fourthly": true };
+      return { "_u-fill-color-inactive": true };
+    };
+
+    const operationAssessmentClass = function(assessment: String) {
+      switch (assessment) {
+        case Assessment[Assessment.BADLY]:
+          return { "_u-fill-color-fault": true };
+        case Assessment[Assessment.SATISFACTORILY]:
+          return { "_u-fill-color-normal": true };
+        case Assessment[Assessment.EXCELLENT]:
+          return { "_u-fill-color-success": true };
+        default:
+          return {
+            "_u-fill-color-disabled": true,
+            "_u-text-disabled": true
+          };
+      }
+    };
+
+    const sortFieldHandler = function(field: keyof Operation) {
+      let newSortDirection: SortDirection;
+      let newSortField: String = props.sortField;
+      if (props.sortField === field) {
+        newSortDirection = props.sortDirection === 1 ? -1 : 1;
+      } else {
+        newSortField = field;
+        newSortDirection = 1;
+      }
+      context.emit("sortFieldChange", {
+        sortField: newSortField,
+        sortDirection: newSortDirection
+      });
+    };
+
+    return {
+      operationAssessmentClass,
+      preparedForViewOperations,
+      sortedBySvgFillClass,
+      sortFieldHandler
+    };
   }
-}
+});
 </script>

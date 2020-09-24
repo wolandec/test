@@ -4,10 +4,12 @@ import Vuex from "vuex";
 import Vue from "vue";
 import store from "../store";
 // @ts-ignore
+import VueCompositionApi from "@vue/composition-api";
 import UiFieldOperationsTable from "../components/UiFieldOperationsTable";
 
 import Operation, { Assessment, OperationType } from "../models/Operation";
 
+Vue.use(VueCompositionApi);
 Vue.use(Vuex);
 
 export default {

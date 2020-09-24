@@ -25,9 +25,9 @@
     <div class="field-operations__table">
       <ui-field-operations-table
         @sortFieldChange="handleSortFieldChange"
-        :sortField="sortField"
-        :sortDirection="sortDirection"
-        :filter="filter"
+        :sortField="data.sortField"
+        :sortDirection="data.sortDirection"
+        :filter="data.filter"
         :operations="operations"
         :locale="locale"
       >
@@ -37,83 +37,103 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import {
+  defineComponent,
+  reactive,
+  watch,
+  computed
+} from "@vue/composition-api";
+
 import UiButton from "@/components/UiButton.vue";
 import UiFieldOperationsTable from "@/components/UiFieldOperationsTable.vue";
-import Operation, { OperationFilter, SortDirection } from "@/models/Operation";
-import {State} from "vuex-class";
+import Operation, { OperationFilter } from "@/models/Operation";
 
 const DEFAULT_FILTER = "none";
 const DEFAULT_SORT_FIELD = "date";
 const DEFAULT_SORT_DIRECTION = 1;
 
-@Component({ components: { UiButton, UiFieldOperationsTable } })
-export default class FieldOperations extends Vue {
-  @State
-  public operations!: Array<Operation>;
-
-  @State
-  public locale!: any;
-
-  private sortField: keyof Operation = DEFAULT_SORT_FIELD;
-  private sortDirection: SortDirection = DEFAULT_SORT_DIRECTION;
-
-  private filter: OperationFilter = DEFAULT_FILTER;
-
-  @Watch("$route")
-  routeHandler() {
-    this.syncPropsAndRoute();
-  }
-
-  setLocale(): void {
-    this.$store.dispatch("setLocale", "ru-Ru");
-  }
-
-  created() {
-    this.setLocale();
-    this.loadOperations();
-    this.syncPropsAndRoute();
-  }
-  syncPropsAndRoute() {
-    //@ts-ignore
-    this.sortField = this.$route.params.sortField || DEFAULT_SORT_FIELD;
-    //@ts-ignore
-    this.sortDirection =
-      +this.$route.params.sortDirection || DEFAULT_SORT_DIRECTION;
-    //@ts-ignore
-    this.filter = this.$route.params.filter || DEFAULT_FILTER;
-  }
-
-  loadOperations(): void {
-    this.$store.dispatch("loadOperations");
-  }
-
-  //@ts-ignore
-  handleSortFieldChange({ sortField, sortDirection }) {
-    this.sortField = sortField;
-    this.sortDirection = sortDirection;
-    this.pushRoute();
-  }
-
-  handleFilter(filter: OperationFilter) {
-    this.filter = filter;
-    this.pushRoute();
-  }
-
-  pushRoute(): void {
-    this.$router.push({
-      name: "QueryFieldOperations",
-      params: {
-        sortField: this.sortField,
-        filter: this.filter,
-        sortDirection: String(this.sortDirection)
-      }
+export default defineComponent({
+  name: "FieldOperation",
+  components: { UiButton, UiFieldOperationsTable },
+  setup(_, context) {
+    const data = reactive({
+      sortField: DEFAULT_SORT_FIELD,
+      sortDirection: DEFAULT_SORT_DIRECTION,
+      filter: DEFAULT_FILTER
     });
-  }
 
-  filterClass(filter: OperationFilter) {
-    if (filter === this.filter) return { "_u-text-color-fourthly": true };
-    return {};
+    const operations: Array<Operation> = computed(
+      () => context.root.$store.state.operations
+    );
+    const locale: any = computed(() => context.root.$store.state.locale);
+
+    watch(
+      () => context.root.$route,
+      function() {
+        syncPropsAndRoute();
+      }
+    );
+
+    function setLocale(): void {
+      context.root.$store.dispatch("setLocale", "ru-Ru");
+    }
+
+    function syncPropsAndRoute() {
+      //@ts-ignore
+      console.log(context);
+      data.sortField =
+        context.root.$route.params.sortField || DEFAULT_SORT_FIELD;
+      //@ts-ignore
+      data.sortDirection =
+        +context.root.$route.params.sortDirection || DEFAULT_SORT_DIRECTION;
+      //@ts-ignore
+      data.filter = context.root.$route.params.filter || DEFAULT_FILTER;
+    }
+
+    function loadOperations(): void {
+      context.root.$store.dispatch("loadOperations");
+    }
+
+    //@ts-ignore
+    function handleSortFieldChange({ sortField, sortDirection }) {
+      data.sortField = sortField;
+      data.sortDirection = sortDirection;
+      pushRoute();
+    }
+
+    function handleFilter(filter: OperationFilter) {
+      data.filter = filter;
+      pushRoute();
+    }
+
+    function pushRoute(): void {
+      context.root.$router.push({
+        name: "QueryFieldOperations",
+        params: {
+          sortField: data.sortField,
+          filter: data.filter,
+          sortDirection: String(data.sortDirection)
+        }
+      });
+    }
+
+    function filterClass(filter: OperationFilter) {
+      if (filter === data.filter) return { "_u-text-color-fourthly": true };
+      return {};
+    }
+
+    setLocale();
+    loadOperations();
+    syncPropsAndRoute();
+
+    return {
+      filterClass,
+      handleFilter,
+      handleSortFieldChange,
+      operations,
+      locale,
+      data
+    };
   }
-}
+});
 </script>
