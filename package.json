@@ -8,11 +8,16 @@
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "apollo:server-compiler": "tsc -w src/apollo-server/server.ts",
+    "apollo:server-start": "nodemon src/apollo-server/server.js",
+    "apollo:server": "concurrently --kill-others \"npm run apollo:server-compiler\" \"npm run apollo:server-start\""
   },
   "dependencies": {
     "@vue/composition-api": "^1.0.0-beta.14",
+    "apollo-server-express": "^2.18.1",
     "core-js": "^3.6.5",
+    "express": "^4.17.1",
     "moment": "^2.27.0",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",

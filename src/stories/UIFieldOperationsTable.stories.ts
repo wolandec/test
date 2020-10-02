@@ -5,7 +5,7 @@ import Vue from "vue";
 import store from "../store";
 // @ts-ignore
 import VueCompositionApi from "@vue/composition-api";
-import UiFieldOperationsTable from "../components/UiFieldOperationsTable";
+import UiFieldOperationsTable from "../components/UiFieldOperationsTable.vue";
 
 import Operation, { Assessment, OperationType } from "../models/Operation";
 

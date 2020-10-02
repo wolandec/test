@@ -46,7 +46,7 @@ import {
 
 import UiButton from "@/components/UiButton.vue";
 import UiFieldOperationsTable from "@/components/UiFieldOperationsTable.vue";
-import Operation, { OperationFilter } from "@/models/Operation";
+import { OperationFilter } from "@/models/Operation";
 
 const DEFAULT_FILTER = "none";
 const DEFAULT_SORT_FIELD = "date";
@@ -62,9 +62,7 @@ export default defineComponent({
       filter: DEFAULT_FILTER
     });
 
-    const operations: Array<Operation> = computed(
-      () => context.root.$store.state.operations
-    );
+    const operations = computed(() => context.root.$store.state.operations);
     const locale: any = computed(() => context.root.$store.state.locale);
 
     watch(
